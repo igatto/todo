@@ -14,6 +14,7 @@ type application struct {
 func (app *application) mount() *http.ServeMux {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/tasks", app.getAllTasks)
+	mux.HandleFunc("POST /categories", app.createCategory)
 	return mux
 }
 
