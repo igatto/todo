@@ -26,5 +26,6 @@ func main() {
 	app := &application{
 		store: store,
 	}
-	app.run()
+	mux := app.mount()
+	app.run(mux)
 }

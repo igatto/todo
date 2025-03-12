@@ -8,7 +8,8 @@ import (
 )
 
 type Task struct {
-	Name string `json:"name"`
+	Id   int64      `json:"id"`
+	Name NullString `json:"name"`
 }
 
 type TaskStore struct {
@@ -22,7 +23,7 @@ func (s *TaskStore) GetByID(ctx context.Context, userID int64) (Task, error) {
 func (s *TaskStore) GetAll(ctx context.Context) ([]Task, error) {
 	fmt.Println(ctx)
 	rows, err := s.db.Query(`
-		SELECT name
+		SELECT id, name
 		FROM tasks
 		LIMIT 10
 	`)
@@ -34,12 +35,9 @@ func (s *TaskStore) GetAll(ctx context.Context) ([]Task, error) {
 	var result []Task
 	row := Task{}
 	for rows.Next() {
-		if err := rows.Scan(
-			&row.Name,
-		); err != nil {
+		if err := rows.Scan(&row.Id, &row.Name); err != nil {
 			log.Fatal(err)
 		}
-
 		result = append(result, row)
 	}
 
