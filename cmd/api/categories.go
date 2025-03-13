@@ -1,7 +1,7 @@
 package main
 
 import (
-	"log"
+	"log/slog"
 	"net/http"
 
 	"github.com/igatto/todo/internal/store"
@@ -14,6 +14,7 @@ type CreateCategoryPayload struct {
 func (app *application) createCategory(w http.ResponseWriter, r *http.Request) {
 	var payload CreateCategoryPayload
 	if err := readJSON(w, r, &payload); err != nil {
+		slog.Error(err.Error())
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -23,7 +24,7 @@ func (app *application) createCategory(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	err := app.store.Categories.Create(ctx, category)
 	if err != nil {
-		log.Output(1, err.Error())
+		slog.Error(err.Error())
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}

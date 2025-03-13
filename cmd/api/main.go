@@ -19,7 +19,7 @@ func main() {
 
 	db, err := sql.Open("mysql", os.Getenv("MYSQL_CONNECTION_STRING"))
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	defer db.Close()
 	store := store.NewStorage(db)

@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"log"
 )
 
 type Task struct {
@@ -29,14 +28,14 @@ func (s *TaskStore) GetAll(ctx context.Context) ([]Task, error) {
 	`)
 
 	if err != nil {
-		panic(err.Error())
+		return nil, err
 	}
 
 	var result []Task
 	row := Task{}
 	for rows.Next() {
 		if err := rows.Scan(&row.Id, &row.Name); err != nil {
-			log.Fatal(err)
+			return nil, err
 		}
 		result = append(result, row)
 	}
